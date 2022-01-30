@@ -1,2 +1,2 @@
 # gradient-norm-penalty
-ICML-Submission. We appologize for that the code is currently being cleaned up.
+ICML-Submission. We apologize for that the code is currently being cleaned up.

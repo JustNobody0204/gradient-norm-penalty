@@ -413,17 +413,6 @@ def dual_vector(y: jnp.ndarray) -> jnp.ndarray:
   return normalized_gradient
 
 
-def asam_vector(w, g: jnp.ndarray):
-  w_abs = jax.tree_map(lambda x: jnp.abs(x), w)
-  Tw_g = jax.tree_multimap(lambda a, b: a * b, w_abs, g)
-  Tw2_g = jax.tree_multimap(lambda a, b: a * a * b, w_abs, g)
-  gradient_norm = jnp.sqrt(sum(
-      [jnp.sum(jnp.square(e)) for e in jax.tree_util.tree_leaves(Tw_g)]))
-  normalized_gradient = jax.tree_map(lambda x: x / gradient_norm, Tw2_g)
-  return normalized_gradient
-
-
-
 def train_step(
     optimizer: flax.optim.Optimizer,
     state: flax.nn.Collection,
@@ -514,21 +503,12 @@ def train_step(
         grad = jax.lax.pmean(
             grad, 'batch',
             axis_index_groups=local_replica_groups(FLAGS.config.inner_group_size))
-    
-    grad_origial = grad
-    if FLAGS.config.asam:
-      logging.info("Using ASAM ...")
-      grad = asam_vector(model, grad)
-    else:
-      grad = dual_vector(grad)
+    grad = dual_vector(grad)
     noised_model = jax.tree_multimap(lambda a, b: a + radius * b,
                                      model, grad)
     (_, (_, logits)), grad_noised = jax.value_and_grad(
         forward_and_loss, has_aux=True)(noised_model)
-    if FLAGS.config.gnp.norm_perturbations:
-      g = jax.tree_multimap(lambda a, b: (1 - FLAGS.config.gnp.alpha) * a + FLAGS.config.gnp.alpha * b, grad, grad_noised)
-    else:
-      g = jax.tree_multimap(lambda a, b: (1 - FLAGS.config.gnp.alpha) * a + FLAGS.config.gnp.alpha * b, grad_origial, grad_noised)
+    g = jax.tree_multimap(lambda a, b: (1 - FLAGS.config.gnp.alpha) * a + FLAGS.config.gnp.alpha * b, grad, grad_noised)
     return (inner_state, logits), g
 
   lr = learning_rate_fn(step)

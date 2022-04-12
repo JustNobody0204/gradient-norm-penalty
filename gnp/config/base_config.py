@@ -23,9 +23,10 @@ def get_basic_config():
     config.also_eval_on_training_set = False
     config.compute_top_5_error_rate = False
     config.evaluate_every = 1
-    config.no_weight_decay_on_bn = False
     config.inner_group_size = None
+    config.no_weight_decay_on_bn = False
     config.asam = False
+    config.use_dual_in_adam = False
 
     config.gnp = ml_collections.ConfigDict()
     config.gnp.r = 0.0

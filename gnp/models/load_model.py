@@ -20,17 +20,8 @@ import jax
 from jax import numpy as jnp
 from jax import random
 
-from gnp.models import pyramidnet
-from gnp.models import wide_resnet
-from gnp.models import wide_resnet_shakeshake
 from gnp.models import wrn
 
-
-_AVAILABLE_MODEL_NAMES = [
-	'WideResnet28x10',
-	'WideResnet28x6_ShakeShake',
-	'Pyramid_ShakeDrop',
-]
 
 def init_image_model(
 	prng_key: jnp.ndarray, batch_size: int, image_size: int,

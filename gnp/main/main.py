@@ -8,9 +8,10 @@ import tensorflow as tf
 from gnp.main import utli
 from gnp.models import load_model
 from tensorflow.io import gfile
-from gnp.training import flax_training
+from gnp.training import training
 from gnp.ds_pipeline.get_dataset import get_dataset_pipeline
-
+from gnp.optimizer.get_optimizer import get_optimizer
+from gnp.training import flax_training
 
 FLAGS = flags.FLAGS
 WORK_DIR = flags.DEFINE_string('working_dir', None,
@@ -37,7 +38,7 @@ def main(_):
                                         batch_size, FLAGS.config.dataset.image_size,
                                         FLAGS.config.dataset.num_classes, FLAGS.config.dataset.num_channels)
 
-    optimizer = flax_training.create_optimizer(params, 0.0)
+    optimizer = training.utli.create_optimizer(params, 0.0)
 
     flax_training.train(module, optimizer, state, ds, FLAGS.config.model_folder,
                         FLAGS.config.total_epochs)

@@ -9,9 +9,8 @@ An exmaple:
 <code>
 python3 -m gnp.main.main  --config=${YOUR_TRAIN_CONFIG_DIR}
                           --working_dir=${YOUR_OURPUT_DIR} 
-                          --config.gnp.alpha=$alpha 
-                          --config.gnp.r=$ra 
-                          --config.opt.opt_type=$opt_type 
+                          --config.gnp.alpha=0.8
+                          --config.gnp.r=0.1
 </code>
 
 \

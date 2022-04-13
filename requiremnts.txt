@@ -76,7 +76,7 @@ tqdm==4.62.3
 typeguard==2.13.3
 typing-extensions==3.7.4.3
 urllib3==1.26.7
--e git+ssh://workthu@101.6.68.108:19127/home/workthu/zy/code/further_study/vit_module@6425c4162a998abec1e019a32e1966bc6e72d3da#egg=vit_module
+-e git+ssh://work@19127/home/work/code/vit_module@6425c4162a998abec1e019a32e1966bc6e72d3da#egg=vit_module
 Werkzeug==2.0.2
 wrapt==1.12.1
 zipp==3.6.0

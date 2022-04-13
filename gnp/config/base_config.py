@@ -42,9 +42,6 @@ def get_basic_config():
     config.logging.logger_sys_output = False
     config.write_config_to_json = True
 
-    config.from_pretrained_checkpoint = False
-    config.efficientnet_checkpoint_path = None
-
     return config.lock()
 
 def get_dataset_config():

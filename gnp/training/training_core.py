@@ -45,15 +45,7 @@ def train_step(
 
     step = optimizer.state.step
 
-    def get_sam_gradient(model: flax.nn.Model, radius: float):
-        """Returns the gradient of the SAM loss loss, updated state and logits.
-
-        See https://arxiv.org/abs/2010.01412 for more details.
-
-        Args:
-        model: The model that we are training.
-        radius: Size of the perturbation.
-        """
+    def get_gnp_gradient(model: flax.nn.Model, radius: float):
         # compute gradient on the whole batch
         (_, (inner_state, _)), grad = jax.value_and_grad(
             lambda m: forward_and_loss(m), has_aux=True)(model)
@@ -82,7 +74,7 @@ def train_step(
     radius = FLAGS.config.gnp.r
 
     if radius > 0:  # SAM loss
-        (new_state, logits), grad = get_sam_gradient(optimizer.target, radius)
+        (new_state, logits), grad = get_gnp_gradient(optimizer.target, radius)
     else:  # Standard SGD
         (_, (new_state, logits)), grad = jax.value_and_grad(
             forward_and_loss, has_aux=True)(

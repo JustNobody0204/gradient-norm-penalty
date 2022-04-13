@@ -34,7 +34,6 @@ def get_basic_config():
     config.gnp.alpha = 0.0
     config.gnp.norm_perturbations = True
 
-    config.ema_decay = 0.
     config.retrain = True
     config.logging = ml_collections.ConfigDict()
     config.logging.tensorboard_logging_frequency = 1
